@@ -96,9 +96,7 @@ xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
 >
     <soapenv:Header />
     <soapenv:Body>
-        <te:ReceiveAckResponse
-xmlns:te="http://tempuri.org/"
->
+        <te:ReceiveAckResponse xmlns:te="http://tempuri.org/">
             <te:ReceiveAckResult>0</te:ReceiveAckResult>
         </te:ReceiveAckResponse>
     </soapenv:Body>
@@ -111,7 +109,7 @@ xmlns:te="http://tempuri.org/"
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:p2p="http://service.bni.co.id/p2plending">
    <soapenv:Header/>
    <soapenv:Body>
-      <p2p:checkSIDAck>
+      <nsl:checkSIDAck>
          <request>
             <!--Optional:-->
             <header>
@@ -122,7 +120,7 @@ xmlns:te="http://tempuri.org/"
             <sid>IDD1211AA328459</sid>
             <sre>NI0010RF000111</sre>
          </request>
-      </p2p:checkSIDAck>
+      </nsl:checkSIDAck>
    </soapenv:Body>
 </soapenv:Envelope>
 
@@ -173,8 +171,39 @@ BEGIN
     END IF;
 END; 
 
+========================== Message Default form SoapUI ===============================================
 
-database name KSEI
-username : bni
-password : bni
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://spring.io/guides/ns1-producing-web-service">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns1:CheckSID>
+         <bulkFileUploadName>0061-API-20220120</bulkFileUploadName>
+         <fundSeparationDataSID>
+            <fundSeparationDataSIDDetails>
+               <participantID>123</participantID>
+               <sidNumber>IDD031179851876</sidNumber>
+               <accountNumberOnKsei>123</accountNumberOnKsei>
+               <externalReff>FSVDIBNI0202072012_0212099</externalReff>
+            </fundSeparationDataSIDDetails>
+         </fundSeparationDataSID>
+      </ns1:CheckSID>
+   </soapenv:Body>
+</soapenv:Envelope>
 
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://spring.io/guides/ns1-producing-web-service">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns1:CheckSIDAck>
+         <request>
+            <header>
+               <companyId>?</companyId>
+               <parentCompanyId>?</parentCompanyId>
+               <requestUuid>?</requestUuid>
+            </header>
+            <sid>IDD250979852115</sid>
+            <sre>NI001ZJ2900122</sre>
+         </request>
+      </ns1:CheckSIDAck>
+   </soapenv:Body>
+</soapenv:Envelope>
