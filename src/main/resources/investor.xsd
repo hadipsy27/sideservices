@@ -1,0 +1,96 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://spring.io/guides/ns1-producing-web-service"
+           targetNamespace="http://spring.io/guides/ns1-producing-web-service"
+           elementFormDefault="unqualified">
+
+    <xs:complexType name="investorInfo">
+        <xs:sequence>
+            <xs:element name="bulkFileUploadName" type="xs:string" />
+            <xs:element name="noSid" type="xs:string" />
+            <xs:element name="noSubRekEfek" type="xs:string" />
+            <xs:element name="externalrefference" type="xs:string" />
+            <xs:element name="kseiInvestorName" type="xs:string" />
+            <xs:element name="kseiInvestorId" type="xs:string" />
+            <xs:element name="kseiInvestorNPWP" type="xs:string" />
+            <xs:element name="kseiInvestorPassport" type="xs:string" />
+            <xs:element name="kseiAckStatus" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="fundSeparationDataSIDDetails">
+        <xs:sequence>
+            <xs:element name="participantID" type="xs:string"/>
+            <xs:element name="sidNumber" type="xs:string" />
+            <xs:element name="accountNumberOnKsei" type="xs:string"/>
+            <xs:element name="externalReff" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="fundSeparationDataSID">
+        <xs:sequence>
+            <xs:element name="fundSeparationDataSIDDetails" type="tns:fundSeparationDataSIDDetails"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="CheckSID">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bulkFileUploadName" type="xs:string" />
+                <xs:element name="fundSeparationDataSID" type="tns:fundSeparationDataSID"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="checkSIDRes">
+        <xs:sequence>
+            <xs:element name="fundSeparationDataSIDResDetails" type="tns:fundSeparationDataSIDDetails"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="CheckSIDResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="filename" type="xs:string"/>
+                <xs:element name="checkSIDRes" type="tns:checkSIDRes"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="CheckSIDAck">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="request" type="tns:request"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="request">
+        <xs:sequence>
+            <xs:element name="header" type="tns:header"/>
+            <xs:element name="sid" type="xs:string" />
+            <xs:element name="sre" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="header">
+        <xs:sequence>
+            <xs:element name="companyId" type="xs:string"/>
+            <xs:element name="parentCompanyId" type="xs:string" />
+            <xs:element name="requestUuid" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="CheckSIDAckResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="externalrefference" type="xs:string"/>
+                <xs:element name="kseiInvestorName" type="xs:string"/>
+                <xs:element name="kseiInvestorId" type="xs:string"/>
+                <xs:element name="kseiInvestorNPWP" type="xs:string"/>
+                <xs:element name="kseiInvestorPassport" type="xs:string"/>
+                <xs:element name="kseiAckStatus" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

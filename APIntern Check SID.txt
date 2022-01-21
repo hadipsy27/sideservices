@@ -1,0 +1,180 @@
+===========================================
+=== A. Message From API To Microservice ===
+===========================================
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+xmlns:ns1="http://service.bni.co.id/ksei">
+   <soapenv:Header/>
+   <soapenv:Body>
+	<ns1:checkSID>
+		<bulkFile_uploadName>0060-API-20211012</bulkFile_uploadName>
+		<fundSeparationDataSID>
+			<fundSeparationDataSIDDetails>
+				<participantID>NI001</participantID>
+				<sidNumber>IDD1211AA328459</sidNumber>
+				<accountNumberOnKsei>NI0010RF000111</accountNumberOnKsei>
+			</fundSeparationDataSIDDetails>
+		</fundSeparationDataSID>
+	</ns1:checkSID>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ksei:checkSIDResponse xmlns:ksei="http://service.bni.co.id/ksei">
+         <fileName/>
+         <checkSIDRes>
+            <fundSeparationDataSIDResDetails>
+               <participantID>NI001</participantID>
+               <sidNumber>IDD1211AA328459</sidNumber>
+               <accountNumberOnKsei>NI0010RF000111</accountNumberOnKsei>
+               <externalReff>FSVDIBNI0212102021_0723421</externalReff>
+            </fundSeparationDataSIDResDetails>
+         </checkSIDRes>
+      </ksei:checkSIDResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+* externalReff: digenerate oleh microservice dg format FSVDIBNI02ddmmyyyy_hhMMss
+
+
+================================================
+=== B. Message From Microservice To MPG Ksei ===
+================================================
+<ksei:validateInvestors
+xmlns:ksei="http://service.bni.co.id/ksei"
+>
+    <memberCode>BNI02</memberCode>
+    <validationRequest>
+        <investorList>
+            <refferenceNumber>FSVDIBNI0212102021_0723421</refferenceNumber>
+            <participantCode>NI001</participantCode>
+            <investorCode>IDD1211AA328459</investorCode>
+            <investorAccountOnKsei>NI0010RF000111</investorAccountOnKsei>
+        </investorList>
+    </validationRequest>
+</ksei:validateInvestors>
+
+<p:validateInvestorsResponse_._type xsi:type="p:validateInvestorsResponse_._type"
+xmlns:p="wsdl:http://service.bni.co.id/ksei"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+	<validationResponse>1</validationResponse>
+</p:validateInvestorsResponse_._type>
+
+
+================================================
+=== C. Message From MPG Ksei To Microservice ===
+================================================
+
+<ksei:receiveInvestorValidationAck
+xmlns:ksei="http://service.bni.co.id/ksei"
+>
+    <memberCode>BNI02</memberCode>
+    <inputValidationAck>
+        <bankCode>BNI02</bankCode>
+        <reportTimestamp>20210922</reportTimestamp>
+        <totalRecord>1</totalRecord>
+        <invalidRecord>0</invalidRecord>
+        <investorList>
+            <relatedRefferenceData>FSVDIBNI0222092021_1114571</relatedRefferenceData>
+            <investorCode>Valid</investorCode>
+            <investorAccountNumber>Valid</investorAccountNumber>
+            <investorName>UJI SYNC 6</investorName>
+            <investorID>1242294077568358</investorID>
+            <investorNPWP />
+            <investorPassport />
+        </investorList>
+    </inputValidationAck>
+</ksei:receiveInvestorValidationAck>
+
+
+<soapenv:Envelope
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+>
+    <soapenv:Header />
+    <soapenv:Body>
+        <te:ReceiveAckResponse
+xmlns:te="http://tempuri.org/"
+>
+            <te:ReceiveAckResult>0</te:ReceiveAckResult>
+        </te:ReceiveAckResponse>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+
+================================================
+=== D. Message From MPG Ksei To Microservice ===
+================================================
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:p2p="http://service.bni.co.id/p2plending">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <p2p:checkSIDAck>
+         <request>
+            <!--Optional:-->
+            <header>
+               <companyId>NI001</companyId>
+               <parentCompanyId>BNIS</parentCompanyId>
+               <requestUuid>ramdomUUID</requestUuid>
+            </header>
+            <sid>IDD1211AA328459</sid>
+            <sre>NI0010RF000111</sre>
+         </request>
+      </p2p:checkSIDAck>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <p813:checkSIDAckResponse xmlns:p813="http://service.bni.co.id/p2plending">
+         <response xsi:type="p2:CheckSIDResponse" xmlns:p2="http://service.bni.co.id/p2plending">
+            <relatedRefferenceNumber>FSVDIBNI0212102021_0723421</relatedRefferenceNumber>
+            <investorName/>
+            <investorID/>
+            <investorNPWP/>
+            <investorPassport/>
+            <ackStatus/>
+         </response>
+      </p813:checkSIDAckResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+=======================================
+=== C. Struktur Table & Sample Data ===
+=======================================
+
+  CREATE TABLE "KSEI_FUND_SEP_ACCOUNT_KSEI" 
+   (	"BULK_FILE_UPLOAD_NAME" VARCHAR2(50 BYTE) NOT NULL ENABLE, 
+	"NO_SID" VARCHAR2(15 BYTE), 
+	"NO_SUB_REK_EFEK" VARCHAR2(14 BYTE), 
+	"EXTERNALREFFERENCE" VARCHAR2(80 BYTE), 
+	"KSEI_INVESTOR_NAME" VARCHAR2(300 BYTE), 
+	"KSEI_INVESTOR_ID" VARCHAR2(60 BYTE), 
+	"KSEI_INVESTOR_NPWP" VARCHAR2(60 BYTE), 
+	"KSEI_INVESTOR_PASSPORT" VARCHAR2(60 BYTE), 
+	"KSEI_ACK_STATUS" VARCHAR2(7 BYTE)
+   );
+
+Insert into KSEI_FUND_SEP_ACCOUNT_KSEI (BULK_FILE_UPLOAD_NAME,NO_SID,NO_SUB_REK_EFEK,EXTERNALREFFERENCE,KSEI_INVESTOR_NAME,KSEI_INVESTOR_ID,KSEI_INVESTOR_NPWP,KSEI_INVESTOR_PASSPORT,KSEI_ACK_STATUS) values ('0060-API-20211012','IDD1211AA328459','NI0010RF000111','FSVDIBNI0212102021_0723421',null,null,null,null,null);
+Insert into KSEI_FUND_SEP_ACCOUNT_KSEI (BULK_FILE_UPLOAD_NAME,NO_SID,NO_SUB_REK_EFEK,EXTERNALREFFERENCE,KSEI_INVESTOR_NAME,KSEI_INVESTOR_ID,KSEI_INVESTOR_NPWP,KSEI_INVESTOR_PASSPORT,KSEI_ACK_STATUS) values ('0060-API-20211012','IDD250979852115','NI001ZJ2900122','FSVDIBNI0202072012_0212099','OLAF','3321234509800015','58.111.222.3-501.000',null,'OK');
+Insert into KSEI_FUND_SEP_ACCOUNT_KSEI (BULK_FILE_UPLOAD_NAME,NO_SID,NO_SUB_REK_EFEK,EXTERNALREFFERENCE,KSEI_INVESTOR_NAME,KSEI_INVESTOR_ID,KSEI_INVESTOR_NPWP,KSEI_INVESTOR_PASSPORT,KSEI_ACK_STATUS) values ('0060-API-20211012','IDD031179851924','NI001ZJ2700159','FSVDIBNI0202072012_0212097','SVEN','3601234511710001','24.111.222.3-411.000',null,'OK');
+
+CREATE OR REPLACE 
+TRIGGER TRG_KSEI_FUND_SEP_ACCOUNT_KSEI 
+BEFORE INSERT ON KSEI_FUND_SEP_ACCOUNT_KSEI  
+  FOR EACH ROW
+  
+BEGIN 
+    IF SUBSTR(:NEW.NO_SUB_REK_EFEK, 1, 5) = 'NI001' THEN
+        SELECT 'OK' INTO :NEW.KSEI_ACK_STATUS FROM DUAL;
+    END IF;
+END; 
+
+
+database name KSEI
+username : bni
+password : bni
+
