@@ -10,17 +10,30 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
-public class InvestorServiceImpl implements InvestorService{
+public class InvestorServiceImpl implements InvestorService {
 
     @Autowired
     InvestorRepository investorRepository;
 
     @Override
     public Investor addInvestor(Investor investor) {
-        return investorRepository.save(investor);
+        
+        List<Investor> investors = investorRepository.findByNoId(investor.getNoSid());
+
+        for (Investor i : investors) {
+            if (i.getKseiAckStatus() == null) {
+                return investorRepository.save(investor);
+            } else if (i.getKseiAckStatus() != null) {
+                System.out.println("Cannot insert data");
+            }
+        }
+
+        return investor;
+
     }
 
     @Override
@@ -30,9 +43,9 @@ public class InvestorServiceImpl implements InvestorService{
         String noSubRekEfek = request.getRequest().getSre();
         CheckSIDAckResponse response = new CheckSIDAckResponse();
         List<Investor> investor = investorRepository.findByNoSid(noSid, noSubRekEfek);
-        for (int i=0 ; i<investor.size(); i++){
+        for (int i = 0; i < investor.size(); i++) {
             Investor investor1 = investor.get(i);
-            if (noSid.equals(investor1.getNoSid()) && noSubRekEfek.equals(investor1.getNoSubRekEfek())){
+            if (noSid.equals(investor1.getNoSid()) && noSubRekEfek.equals(investor1.getNoSubRekEfek())) {
                 response.setExternalrefference(investor1.getExternalrefference());
                 response.setKseiInvestorName(investor1.getKseiInvestorName());
                 response.setKseiInvestorId(investor1.getKseiInvestorId());
@@ -54,5 +67,4 @@ public class InvestorServiceImpl implements InvestorService{
 //        investor.setKseiAckStatus(investor.getKseiAckStatus());
 //        return investor;
 //    }
-
 }
